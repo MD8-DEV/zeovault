@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Purification System - Bahr El-Batts Project</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #1a73e8;
+            --secondary-color: #34a853;
+            --accent-color: #4285f4;
+            --dark-color: #202124;
+            --light-color: #f8f9fa;
+            --text-color: #3c4043;
+            --light-gray: #e8eaed;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-color);
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        nav {
+            background-color: var(--dark-color);
+            padding: 10px 0;
+            position: sticky;
+            top: 0px;
+            z-index: 999;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            justify-content: center;
+        }
+        
+        nav ul li {
+            margin: 0 15px;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--accent-color);
+        }
+
+        button{
+            background-color: #1a73e8;
+            font-size: 25px;
+            padding: 10px;
+            border: none;
+            border-radius: 30px;
+            transition: all 0.1s;
+            color: white;
+            margin: 30px;
+        }
+        button:hover{
+            background-color: #5596eb;
+        }
+        
+        .hero {
+            background: linear-gradient(rgba(0, 29, 109, 0.7), rgba(0, 0, 0, 0.386)), url('https://zeovault.sirv.com/background.png') center/cover no-repeat;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 0 20px;
+        }
+        
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+        }
+        
+        .section {
+            padding: 60px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--primary-color);
+        }
+        
+        .abstract {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .abstract p {
+            margin-bottom: 15px;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .result-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 20px;
+            transition: transform 0.3s;
+        }
+        
+        .result-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .result-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .chart-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        table th, table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        table th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        table tr:nth-child(even) {
+            background-color: var(--light-gray);
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .team-member {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .team-member:hover {
+            transform: translateY(-5px);
+        }
+        
+        .team-member img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+        
+        .team-member h3 {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        .team-member p {
+            color: var(--text-color);
+            font-style: italic;
+        }
+        
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav ul li {
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Water Purification System</h1>
+            <p>A Sustainable Solution for Bahr El-Batts Area</p>
+        </div>
+    </header>
+    
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#abstract">Abstract</a></li>
+                <li><a href="#results">Results</a></li>
+                <li><a href="#analysis">Analysis</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#calc">Calculations</a></li>
+                <li><a href="#model">Bussiness Model</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="hero">
+        <img src="https://zeovault.sirv.com/logo_cloud.png" alt="">
+        <button>Donate Now!</button>
+    </div>
+    
+    <section id="abstract" class="section">
+        <div class="container">
+            <h2 class="section-title">Abstract</h2>
+            <div class="abstract">
+                <p>With the current demands for better sustainability and better well-being, Egypt has faced several grand challenges preventing reaching these goals, with major ones being dealing with arid areas and pollution and its consequences. The purpose of this study is to design a water purification system in a rural area with limited access to water, Bahr El-Batts area, and investigate how a feedback system can be implemented to better manage the water purification cycles.</p>
+                
+                <p>The proposed solution is to use a system of three layers: Zeolite, Electrocoagulation, and UV sterilization to treat salinity, turbidity, and bacteria concentration respectively, and to utilize relays and sensors to facilitate the movement of the water. The layers were put into three containers, all connected to a central container that houses the wastewater, moving the water to each layer to filter its respective parameter.</p>
+                
+                <p>The design requirements that the prototype was tested for were to decrease the TDS to below 500ppm, the TVOCs to 2000ppb as an indicator for bacteria, and the turbidity to 5% turbidness. The major findings after gathering the results were that the TDS reached 105ppm±10ppm, the TVOCs reached 1980ppb±297ppb, and the turbidity reached 5%±0.5%, leading to the certainty that the prototype is working efficiently, and that the problem to be solved was manageable.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section id="results" class="section" style="background-color: #f1f3f4;">
+        <div class="container">
+            <h2 class="section-title">Results</h2>
+            
+            <p>Our water purification system was rigorously tested to evaluate its performance in removing key contaminants. Below are the detailed results from our testing:</p>
+            
+            <div class="chart-container">
+                <h3>TDS Reduction Results</h3>
+                <p>The Total Dissolved Solids (TDS) measurements across 5 cycles and 3 trials showed consistent reduction from initial values above 1000 ppm to final values well below the 500 ppm target.</p>
+                
+                <div style="position: relative; height: 300px; margin-bottom: 30px;">
+                    <canvas id="tdsChart"></canvas>
+                </div>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cycle</th>
+                            <th>Avg TDS (ppm) Trial 1</th>
+                            <th>Avg TDS (ppm) Trial 2</th>
+                            <th>Avg TDS (ppm) Trial 3</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>1092 ± 10</td>
+                            <td>1082 ± 10</td>
+                            <td>1202 ± 10</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>643 ± 10</td>
+                            <td>692 ± 10</td>
+                            <td>503 ± 10</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>532 ± 10</td>
+                            <td>450 ± 10</td>
+                            <td>350 ± 10</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>354 ± 10</td>
+                            <td>313 ± 10</td>
+                            <td>213 ± 10</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>120 ± 10</td>
+                            <td>190 ± 10</td>
+                            <td>80 ± 10</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="chart-container">
+                <h3>VOCs Reduction Results</h3>
+                <p>Volatile Organic Compounds (VOCs) were measured as an indicator of bacterial presence. The system successfully reduced concentrations from over 10,000 ppb to below 2,000 ppb.</p>
+                
+                <div style="position: relative; height: 300px; margin-bottom: 30px;">
+                    <canvas id="vocsChart"></canvas>
+                </div>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cycle</th>
+                            <th>VOCs (ppb) Trial 1</th>
+                            <th>VOCs (ppb) Trial 2</th>
+                            <th>VOCs (ppb) Trial 3</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>10068 ± 297</td>
+                            <td>10100 ± 297</td>
+                            <td>11032 ± 297</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>3523 ± 297</td>
+                            <td>4123 ± 297</td>
+                            <td>5254 ± 297</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>2365 ± 297</td>
+                            <td>2832 ± 297</td>
+                            <td>3199 ± 297</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>2232 ± 297</td>
+                            <td>2159 ± 297</td>
+                            <td>1976 ± 297</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>1980 ± 297</td>
+                            <td>1865 ± 297</td>
+                            <td>1792 ± 297</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="chart-container">
+                <h3>Turbidity Reduction Results</h3>
+                <p>Water turbidity was successfully reduced from initial values of approximately 20% to below the target of 5% after the full treatment cycle.</p>
+                
+                <div style="position: relative; height: 300px; margin-bottom: 30px;">
+                    <canvas id="turbidityChart"></canvas>
+                </div>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cycle</th>
+                            <th>Avg % Turbidity Trial 1</th>
+                            <th>Avg % Turbidity Trial 2</th>
+                            <th>Avg % Turbidity Trial 3</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>17 ± 0.5</td>
+                            <td>20 ± 0.5</td>
+                            <td>18 ± 0.5</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>15 ± 0.5</td>
+                            <td>17 ± 0.5</td>
+                            <td>13 ± 0.5</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>11 ± 0.5</td>
+                            <td>14 ± 0.5</td>
+                            <td>10 ± 0.5</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>8 ± 0.5</td>
+                            <td>9 ± 0.5</td>
+                            <td>6 ± 0.5</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>5 ± 0.5</td>
+                            <td>4 ± 0.5</td>
+                            <td>3 ± 0.5</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="results-grid">
+                <div class="result-card">
+                    <h3>System Efficiency</h3>
+                    <p>The energy consumed per liter by the prototype over the 5 cycles is found to be 30,879 Joules/liter.</p>
+                    <p>The total produced clean water is 2 liters over the span of 1 hour.</p>
+                </div>
+                
+                <div class="result-card">
+                    <h3>Initial vs. Final Values</h3>
+                    <p>Initial values for the whole sample:</p>
+                    <ul>
+                        <li>TDS: 1252 ppm</li>
+                        <li>Turbidity: 23%</li>
+                        <li>VOCs: 12532 ppb</li>
+                    </ul>
+                    <p>Final values after treatment:</p>
+                    <ul>
+                        <li>TDS: ~105 ppm</li>
+                        <li>Turbidity: ~5%</li>
+                        <li>VOCs: ~1980 ppb</li>
+                    </ul>
+                </div>
+                
+                <div class="result-card">
+                    <h3>Component Lifetime</h3>
+                    <p>Calculated lifetime of components:</p>
+                    <ul>
+                        <li>Zeolite layer: 36 cycles</li>
+                        <li>Electrocoagulation layer: 864 cycles</li>
+                        <li>UV layer: 16,000 hours</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="analysis" class="section">
+        <div class="container">
+            <h2 class="section-title">Analysis Highlights</h2>
+            
+            <div class="results-grid">
+                <div class="result-card">
+                    <h3>Zeolite Layer</h3>
+                    <p>Zeolite is a porous aluminosilicate material with a three-dimensional structure that functions through adsorption processes. Its skeletal structure with channels and chambers gives it an excellent ability to adsorb contaminants.</p>
+                    <p>Key mechanisms:</p>
+                    <ul>
+                        <li>Ion exchange: Captures positive cations like Na+ and K+</li>
+                        <li>Physical adsorption: Removes solid pollutants through multilayer adsorption</li>
+                    </ul>
+                </div>
+                
+                <div class="result-card">
+                    <h3>Electrocoagulation Layer</h3>
+                    <p>Electrocoagulation utilizes electrolytic cells with a sacrificial iron anode that releases ions acting as coagulant agents. These ions neutralize particle charges and cause them to coagulate.</p>
+                    <p>Removes pollutants through:</p>
+                    <ul>
+                        <li>Floatation: Hydrogen microbubbles carry particles upward</li>
+                        <li>Precipitation: Iron hydroxide forms a gelatinous precipitate that captures suspended particles</li>
+                    </ul>
+                </div>
+                
+                <div class="result-card">
+                    <h3>UV Sterilization Layer</h3>
+                    <p>The UV sterilization system uses short-wavelength UV-B light (254 nm) to kill or deactivate microorganisms by disrupting their DNA and RNA structure.</p>
+                    <p>Advantages:</p>
+                    <ul>
+                        <li>Environmentally friendly with no chemical by-products</li>
+                        <li>Fast-acting: kills up to 99.99% of bacteria and pathogens within seconds</li>
+                        <li>Achieved 81% efficiency in reducing bacteria indicators in our tests</li>
+                    </ul>
+                </div>
+                
+                <div class="result-card">
+                    <h3>Feedback System</h3>
+                    <p>Our automated feedback system consists of one main container connected to three treatment stages, with sensors monitoring water quality parameters.</p>
+                    <p>The system:</p>
+                    <ul>
+                        <li>Prioritizes TDS reduction before addressing turbidity and bacteria</li>
+                        <li>Uses relays to control water pumps based on sensor readings</li>
+                        <li>Optimizes energy consumption by only treating parameters that exceed threshold values</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="about" class="section" style="background-color: #f1f3f4;">
+        <div class="container">
+            <h2 class="section-title">About Us</h2>
+            
+            <p style="text-align: center; margin-bottom: 40px;">Our team worked together to design, implement, and test this innovative water purification system as part of our capstone project. We would like to thank our mentors and supporters who made this project possible.</p>
+            
+            <div class="team-grid">
+                <div class="team-member">
+                    <img src="https://zeovault.sirv.com/gouda.jpg" alt="Team Member">
+                    <h3>Mohamed Gouda</h3>
+                    <p>Senior Designer</p>
+                </div>
+                
+                <div class="team-member">
+                    <img src="https://zeovault.sirv.com/abdo.jpg" alt="Team Member">
+                    <h3>Abdelrahman Mohamed</h3>
+                    <p>Engineering speacilst</p>
+                </div>
+                
+                <div class="team-member">
+                    <img src="https://zeovault.sirv.com/kareem.png" alt="Team Member">
+                    <h3>Kareem Bahaa</h3>
+                    <p>Editor in Chief</p>
+                </div>
+                
+                <div class="team-member">
+                    <img src="https://zeovault.sirv.com/moemen.png" alt="Team Member">
+                    <h3>Moemen Ali</h3>
+                    <p>Main Researcher</p>
+                </div>
+            </div>
+            
+            <div style="margin-top: 40px; text-align: center;">
+                <h3>Acknowledgements</h3>
+                <p>We would like to thank Allah for helping us along the way. Then, we thank Mr. Mohamed Bekheet, the capstone general, and Mrs. Ninette Raafat, the capstone leader, for their support. We also thank Abo Menna, a local farmer from El-Fayoum, for his help in getting the wastewater sample from Bahr El-Batts. We thank Mrs. Phoebe Barsoom, our capstone leader last year, for teaching us the ethics of making a great capstone project, and how to work as a team in harmony, and Mrs. Eman and Mr. Mohamed Hanafy, the geology and chemistry teachers who did our panel review, for their helpful comments.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section id="calc" class="section" style="text-align: center;">
+        <div class="container">
+            <h2 class="section-title">Project Calculations</h2>
+            <object class="pdf" 
+            data=
+"./cap%20(3).pdf"
+            width="800"
+            height="500">
+    </object>
+        </div>
+    </section>
+
+        <section id="model" class="section" style="text-align: center;">
+        <div class="container">
+            <h2 class="section-title">Project bussiness model</h2>
+            <img src="https://zeovault.sirv.com/business%20model.png" style="width: 900px; aspect-ratio: 100/57;" alt="" srcset="">
+        </div>
+    </section>
+
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Water Purification System Project. All rights reserved.</p>
+            <p>Bahr El-Batts Water Treatment Initiative</p>
+        </div>
+    </footer>
+
+    <script>
+        // Data for TDS Chart
+        const tdsCtx = document.getElementById('tdsChart').getContext('2d');
+        const tdsChart = new Chart(tdsCtx, {
+            type: 'line',
+            data: {
+                labels: ['Cycle 1', 'Cycle 2', 'Cycle 3', 'Cycle 4', 'Cycle 5'],
+                datasets: [{
+                    label: 'Trial 1',
+                    data: [1092, 643, 532, 354, 120],
+                    borderColor: '#1a73e8',
+                    backgroundColor: 'rgba(26, 115, 232, 0.1)',
+                    tension: 0.3,
+                    borderWidth: 3,
+                    fill: true
+                }, {
+                    label: 'Trial 2',
+                    data: [1082, 692, 450, 313, 190],
+                    borderColor: '#34a853',
+                    backgroundColor: 'rgba(52, 168, 83, 0.1)',
+                    tension: 0.3,
+                    borderWidth: 3,
+                    fill: true
+                }, {
+                    label: 'Trial 3',
+                    data: [1202, 503, 350, 213, 80],
+                    borderColor: '#ea4335',
+                    backgroundColor: 'rgba(234, 67, 53, 0.1)',
+                    tension: 0.3,
+                    borderWidth: 3,
+                    fill: true
+                }, {
+                    label: 'Target Value (500 ppm)',
+                    data: [500, 500, 500, 500, 500],
+                    borderColor: '#000000',
+                    borderDash: [5, 5],
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'TDS Reduction Over Treatment Cycles',
+                        font: {
+                            size: 16
+                        }
+                    },
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.dataset.label}: ${context.raw} ppm`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'TDS (ppm)'
+                        },
+                        min: 0,
+                        max: 1300
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Treatment Cycle'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Data for VOCs Chart
+        const vocsCtx = document.getElementById('vocsChart').getContext('2d');
+        const vocsChart = new Chart(vocsCtx, {
+            type: 'line',
+            data: {
+                labels: ['Cycle 1', 'Cycle 2', 'Cycle 3', 'Cycle 4', 'Cycle 5'],
+                datasets: [{
+                    label: 'Trial 1',
+                    data: [10068, 3523, 2365, 2232, 1980],
+                    borderColor: '#1a73e8',
+                    backgroundColor: 'rgba(26, 115, 232, 0.1)',
+                    tension: 0.3,
+                    borderWidth: 3,
+                    fill: true
+                }, {
+                    label: 'Trial 2',
+                    data: [10100, 4123, 2832, 2159, 1865],
+                    borderColor: '#34a853',
+                    backgroundColor: 'rgba(52, 168, 83, 0.1)',
+                    tension: 0.3,
+                    borderWidth: 3,
+                    fill: true
+                }, {
+                    label: 'Trial 3',
+                    data: [11032, 5254, 3199, 1976, 1792],
+                    borderColor: '#ea4335',
+                    backgroundColor: 'rgba(234, 67, 53, 0.1)',
+                    tension: 0.3,
+                    borderWidth: 3,
+                    fill: true
+                }, {
+                    label: 'Target Value (2000 ppb)',
+                    data: [2000, 2000, 2000, 2000, 2000],
+                    borderColor: '#000000',
+                    borderDash: [5, 5],
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'VOCs Reduction Over Treatment Cycles',
+                        font: {
+                            size: 16
+                        }
+                    },
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.dataset.label}: ${context.raw} ppb`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'VOCs (ppb)'
+                        },
+                        min: 0,
+                        max: 12000
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Treatment Cycle'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Data for Turbidity Chart
+        const turbidityCtx = document.getElementById('turbidityChart').getContext('2d');
+        const turbidityChart = new Chart(turbidityCtx, {
+            type: 'line',
+            data: {
+                labels: ['Cycle 1', 'Cycle 2', 'Cycle 3', 'Cycle 4', 'Cycle 5'],
+                datasets: [{
+                    label: 'Trial 1',
+                    data: [17, 15, 11, 8, 5],
+                    borderColor: '#1a73e8',
+                    backgroundColor: 'rgba(26, 115, 232, 0.1)',
+                    tension: 0.3,
+                    borderWidth: 3,
+                    fill: true
+                }, {
+                    label: 'Trial 2',
+                    data: [20, 17, 14, 9, 4],
+                    borderColor: '#34a853',
+                    backgroundColor: 'rgba(52, 168, 83, 0.1)',
+                    tension: 0.3,
+                    borderWidth: 3,
+                    fill: true
+                }, {
+                    label: 'Trial 3',
+                    data: [18, 13, 10, 6, 3],
+                    borderColor: '#ea4335',
+                    backgroundColor: 'rgba(234, 67, 53, 0.1)',
+                    tension: 0.3,
+                    borderWidth: 3,
+                    fill: true
+                }, {
+                    label: 'Target Value (5%)',
+                    data: [5, 5, 5, 5, 5],
+                    borderColor: '#000000',
+                    borderDash: [5, 5],
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Turbidity Reduction Over Treatment Cycles',
+                        font: {
+                            size: 16
+                        }
+                    },
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.dataset.label}: ${context.raw}%`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Turbidity (%)'
+                        },
+                        min: 0,
+                        max: 25
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Treatment Cycle'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
